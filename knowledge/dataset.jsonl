@@ -1,0 +1,349 @@
+{"instruction": "Configurar OSPF multiárea en Cisco.", "input": "PID 1, router-id 2.2.2.2, Área 0: red 10.0.0.0/24; Área 1: 172.16.1.0/24", "output": "configure terminal\nrouter ospf 1\nrouter-id 2.2.2.2\nnetwork 10.0.0.0 0.0.0.255 area 0\nnetwork 172.16.1.0 0.0.0.255 area 1\nend"}
+{"instruction": "Configurar OSPF en Huawei con authentication MD5.", "input": "Área 0, interfaz GE0/0/1, clave 123456", "output": "system-view\nospf 1 router-id 3.3.3.3\narea 0\nauthentication-mode md5 1 cipher 123456\nquit\ninterface GigabitEthernet0/0/1\nospf authentication-mode md5 1 cipher 123456\nquit"}
+{"instruction": "Configurar BGP básico en Cisco.", "input": "AS local 65001, vecino 192.168.100.2 AS 65002, red 10.10.10.0/24", "output": "configure terminal\nrouter bgp 65001\nneighbor 192.168.100.2 remote-as 65002\nnetwork 10.10.10.0 mask 255.255.255.0\nend"}
+{"instruction": "Configurar BGP en Huawei con next-hop-self.", "input": "AS 65010, vecino 200.1.1.2 AS 65020, next-hop-self", "output": "system-view\nbgp 65010\npeer 200.1.1.2 as-number 65020\npeer 200.1.1.2 next-hop-local\nquit"}
+{"instruction": "Configurar VRF en Cisco.", "input": "VRF: CLIENTE1, RD 100:1, RT import/export 100:1", "output": "configure terminal\nip vrf CLIENTE1\nrd 100:1\nroute-target import 100:1\nroute-target export 100:1\nend"}
+{"instruction": "Configurar VRF en Huawei.", "input": "VRF A, VPN-target 200:10 both", "output": "system-view\nip vpn-instance A\nvpn-target 200:10 import-export\nquit"}
+{"instruction": "Crear túnel GRE en Cisco.", "input": "Tunnel 0, local 1.1.1.1, remote 2.2.2.2, IP túnel 10.10.10.1/30", "output": "configure terminal\ninterface Tunnel0\nip address 10.10.10.1 255.255.255.252\ntunnel source 1.1.1.1\ntunnel destination 2.2.2.2\nend"}
+{"instruction": "Crear túnel GRE en Huawei.", "input": "Source 3.3.3.3, destination 4.4.4.4, túnel 1", "output": "system-view\ninterface Tunnel1\nip address 10.10.20.1 255.255.255.252\ntunnel-protocol gre\nsource 3.3.3.3\ndestination 4.4.4.4\nquit"}
+{"instruction": "Configurar IPSec en Cisco para túnel site-to-site.", "input": "Peer 5.5.5.5, pre-shared key: clave123, ACL tráfico 192.168.1.0/24 a 192.168.2.0/24", "output": "configure terminal\ncrypto isakmp policy 10\nencryption aes\nhash sha\nauthentication pre-share\ngroup 2\ncrypto isakmp key clave123 address 5.5.5.5\n!\ncrypto ipsec transform-set TSET esp-aes esp-sha-hmac\ncrypto map CMAP 10 ipsec-isakmp\nset peer 5.5.5.5\nset transform-set TSET\nmatch address 101\n!\naccess-list 101 permit ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255\ninterface GigabitEthernet0/0\ncrypto map CMAP\nend"}
+{"instruction": "Configurar IPSec site-to-site en Huawei.", "input": "Peer: 6.6.6.6, clave: secret123, ACL 3000 10.0.0.0/24 a 20.0.0.0/24", "output": "system-view\nike proposal 1\nencryption-algorithm aes-cbc-128\nquit\nike peer 6.6.6.6 v1\npre-shared-key cipher secret123\nquit\nipsec proposal 1\nauthentication-algorithm sha1\nquit\nacl 3000\nrule 5 permit ip source 10.0.0.0 0.0.0.255 destination 20.0.0.0 0.0.0.255\nquit\ninterface GigabitEthernet0/0/0\nipsec policy 1 1 isakmp 6.6.6.6\nquit"}
+{"instruction": "Configurar Multicast PIM Sparse en Cisco.", "input": "RP: 1.1.1.1, interfaces GE0/0 y GE0/1", "output": "configure terminal\nip multicast-routing\ninterface GigabitEthernet0/0\nip pim sparse-mode\nexit\ninterface GigabitEthernet0/1\nip pim sparse-mode\nexit\nip pim rp-address 1.1.1.1\nend"}
+{"instruction": "Configurar Multicast PIM Sparse en Huawei.", "input": "RP estático 2.2.2.2", "output": "system-view\nmulticast routing-enable\npim\nrp-address 2.2.2.2\nquit"}
+{"instruction": "Configurar rutas estáticas en Cisco.", "input": "Ruta 0.0.0.0/0 por 10.0.0.1, ruta 192.168.50.0/24 por 172.16.1.2", "output": "configure terminal\nip route 0.0.0.0 0.0.0.0 10.0.0.1\nip route 192.168.50.0 255.255.255.0 172.16.1.2\nend"}
+{"instruction": "Configurar rutas estáticas en Huawei.", "input": "Default gateway 192.168.1.254", "output": "system-view\nip route-static 0.0.0.0 0 192.168.1.254\nquit"}
+{"instruction": "Configurar HSRP en Cisco.", "input": "VLAN 10, IP virtual 10.1.1.1, prioridad 150", "output": "configure terminal\ninterface Vlan10\nstandby 1 ip 10.1.1.1\nstandby 1 priority 150\nstandby 1 preempt\nend"}
+{"instruction": "Configurar VRRP en Huawei.", "input": "VLANIF20, IP virtual 192.168.80.1, priority 120", "output": "system-view\ninterface Vlanif20\nvrrp vrid 1 virtual-ip 192.168.80.1\nvrrp vrid 1 priority 120\nquit"}
+{"instruction": "Configurar QoS en Cisco con policy-map.", "input": "Priorizar voz: ACL 101, bandwidth 30%; best-effort 70%", "output": "configure terminal\nclass-map VOZ\nmatch access-group 101\npolicy-map QOS\nclass VOZ\npriority percent 30\nclass class-default\nfair-queue\ninterface GigabitEthernet0/0\nservice-policy output QOS\nend"}
+{"instruction": "Configurar QoS en Huawei.", "input": "Priorizar tráfico de voz DSCP 46", "output": "system-view\ntraffic classifier VOZ operator and\nif-match dscp 46\nquit\ntraffic behavior PRIORIDAD\npriority 5\nquit\ntraffic policy QOSVOZ\nclassifier VOZ behavior PRIORIDAD\nquit\ninterface GigabitEthernet0/0/1\ntraffic-policy QOSVOZ inbound\nquit"}
+{"instruction": "Configurar VLAN trunk en Cisco.", "input": "Puerto G0/1 como trunk, VLAN allowed: 10,20,30", "output": "configure terminal\ninterface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30\nend"}
+{"instruction": "Configurar VLAN trunk en Huawei.", "input": "Interface GE0/0/2, VLANs 10 y 20", "output": "system-view\ninterface GigabitEthernet0/0/2\nport link-type trunk\nport trunk allow-pass vlan 10 20\nquit"}
+{"instruction": "Configurar EtherChannel en Cisco con LACP.", "input": "Puertos: G0/1 y G0/2, número de port-channel 1", "output": "configure terminal\ninterface range GigabitEthernet0/1 - 2\nchannel-group 1 mode active\nexit\ninterface Port-channel1\nswitchport mode trunk\nend"}
+{"instruction": "Configurar Eth-Trunk en Huawei con LACP.", "input": "Trunk ID 1, interfaces GE0/0/1 y GE0/0/2", "output": "system-view\ninterface Eth-Trunk1\nmode lacp-static\nquit\ninterface GigabitEthernet0/0/1\neth-trunk 1\nquit\ninterface GigabitEthernet0/0/2\neth-trunk 1\nquit"}
+{"instruction": "Configurar DHCP en Cisco.", "input": "Pool VOZ, red 10.1.1.0/24, default-gateway 10.1.1.1", "output": "configure terminal\ndhcp pool VOZ\nnetwork 10.1.1.0 255.255.255.0\ndefault-router 10.1.1.1\nend"}
+{"instruction": "Configurar DHCP en Huawei.", "input": "Pool datos 192.168.10.0/24, gateway 192.168.10.1", "output": "system-view\ndhcp enable\ndhcp server ip-pool DATOS\nnetwork 192.168.10.0 mask 255.255.255.0\ngateway-list 192.168.10.1\nquit"}
+{"instruction": "Configurar NAT en Cisco (PAT).", "input": "Inside 192.168.1.0/24, outside interfaz G0/0, IP pública dinámica", "output": "configure terminal\ninterface GigabitEthernet0/1\nip nat inside\nexit\ninterface GigabitEthernet0/0\nip nat outside\nexit\naccess-list 1 permit 192.168.1.0 0.0.0.255\nip nat inside source list 1 interface GigabitEthernet0/0 overload\nend"}
+{"instruction": "Configurar NAT en Huawei.", "input": "Inside Gig0/0/1, outside Gig0/0/0, NAT outbound para 10.0.0.0/24", "output": "system-view\nacl 3000\nrule 5 permit ip source 10.0.0.0 0.0.0.255\nquit\ninterface GigabitEthernet0/0/1\nip address 10.0.0.1 255.255.255.0\nnat inside\nquit\ninterface GigabitEthernet0/0/0\nnat outside\nquit\nnat outbound 3000\nquit"}
+{"instruction": "Configurar SNMPv3 en Cisco.", "input": "Usuario admin, auth SHA clave123, priv AES claveABC", "output": "configure terminal\nsnmp-server group ADMINGRP v3 priv\nsnmp-server user admin ADMINGRP v3 auth sha clave123 priv aes 128 claveABC\nend"}
+{"instruction": "Configurar SNMPv3 en Huawei.", "input": "Usuario monitor, autenticación SHA, privacidad AES", "output": "system-view\nsnmp-agent\nsnmp-agent group v3 MONITOR privacy\nsnmp-agent usm-user v3 monitor group MONITOR authentication-mode sha cipher auth123 privacy-mode aes128 cipher priv123\nquit"}
+{"instruction": "Configurar AAA en Cisco con TACACS+.", "input": "Servidor TACACS 10.1.1.10 clave secreta123", "output": "configure terminal\ntacacs-server host 10.1.1.10 key secreta123\naaa new-model\naaa authentication login default group tacacs+ local\nend"}
+{"instruction": "Configurar AAA en Huawei con RADIUS.", "input": "Servidor 192.168.100.10, clave radiusKey", "output": "system-view\nradius-server template R1\nradius-server shared-key cipher radiusKey\nradius-server authentication 192.168.100.10 1812\nquit\naaa\nauthentication-scheme RAD-SCHEME\nauthentication-mode radius local\nquit"}
+{"instruction": "Configurar Port Security en Cisco.", "input": "Puerto Fa0/1, máximo 2 MAC, modo restrict", "output": "configure terminal\ninterface FastEthernet0/1\nswitchport mode access\nswitchport port-security\nswitchport port-security maximum 2\nswitchport port-security violation restrict\nend"}
+{"instruction": "Configurar Port Security en Huawei.", "input": "Interfaz GE0/0/3, limitar 3 MAC", "output": "system-view\ninterface GigabitEthernet0/0/3\nport-security enable\nport-security max-mac-num 3\nquit"}
+{"instruction": "Configurar Spanning Tree en Cisco (RSTP).", "input": "Modo rapid-pvst", "output": "configure terminal\nspanning-tree mode rapid-pvst\nend"}
+{"instruction": "Configurar STP en Huawei (MSTP).", "input": "Habilitar MSTP, región CORE, revisión 1", "output": "system-view\nstp enable\nstp region-configuration\nregion-name CORE\nrevision-level 1\nquit"}
+{"instruction": "Configurar Syslog en Cisco.", "input": "Servidor syslog 10.10.10.10 nivel warnings", "output": "configure terminal\nlogging 10.10.10.10\nlogging trap warnings\nend"}
+{"instruction": "Configurar Syslog en Huawei.", "input": "Enviar logs a 172.16.50.10 nivel debugging", "output": "system-view\ninfo-center loghost 172.16.50.10 log-level debugging\nquit"}
+{"instruction": "Configurar NTP en Cisco.", "input": "Servidor NTP 1.1.1.1", "output": "configure terminal\nntp server 1.1.1.1\nend"}
+{"instruction": "Configurar NTP en Huawei.", "input": "Servidor 2.2.2.2", "output": "system-view\nntp-service enable\nntp-service server 2.2.2.2\nquit"}
+{"instruction":"Configurar OSPF con passive-interface en Cisco.","input":"Proceso 10, redes 192.168.10.0/24 y 10.10.0.0/16, passive en G0/0","output":"configure terminal\nrouter ospf 10\nnetwork 192.168.10.0 0.0.0.255 area 0\nnetwork 10.10.0.0 0.0.255.255 area 0\npassive-interface GigabitEthernet0/0\nend"}
+{"instruction":"Configurar OSPFv3 para IPv6 en Cisco.","input":"Router-ID 5.5.5.5, red IPv6 2001:db8:1::/64 en G0/1","output":"configure terminal\nipv6 unicast-routing\ninterface GigabitEthernet0/1\nipv6 ospf 1 area 0\nexit\nrouter ospfv3 1\nrouter-id 5.5.5.5\nend"}
+{"instruction":"Configurar OSPF multiárea en Huawei con área stub.","input":"Área 0 backbone, área 10 como stub, red 172.30.0.0/16 en área 10","output":"system-view\nospf 1 router-id 4.4.4.4\narea 0\nquit\narea 10\nstub\nnetwork 172.30.0.0 0.0.255.255\nquit"}
+{"instruction":"Configurar BGP con route reflector en Cisco.","input":"AS 65001, RR con cliente 10.10.10.2, no-client-to-client-reflect","output":"configure terminal\nrouter bgp 65001\nbgp cluster-id 100\nneighbor 10.10.10.2 remote-as 65001\nneighbor 10.10.10.2 route-reflector-client\nbgp client-to-client reflection disable\nend"}
+{"instruction":"BGP con local-preference y MED en Cisco.","input":"Vecino 200.200.200.2 AS 65100, Local-pref 300, MED 50","output":"configure terminal\nrouter bgp 65000\nneighbor 200.200.200.2 remote-as 65100\nneighbor 200.200.200.2 route-map LP in\nroute-map LP permit 10\nset local-preference 300\nset metric 50\nend"}
+{"instruction":"Configurar BGP IPv6 en Huawei.","input":"AS 64512, peer 2001:db8:1::2 remote AS 64513, anunciar 2001:db8:10::/48","output":"system-view\nbgp 64512\nipv6-family unicast\nnetwork 2001:db8:10:: 48\npeer 2001:db8:1::2 as-number 64513\nquit"}
+{"instruction":"Configurar MPLS LDP en Cisco.","input":"Activar en interfaces G0/0 y G0/1, router-id 1.1.1.1","output":"configure terminal\nmpls label protocol ldp\nrouter-id 1.1.1.1 force\ninterface GigabitEthernet0/0\nmpls ip\nexit\ninterface GigabitEthernet0/1\nmpls ip\nend"}
+{"instruction":"Configurar MPLS en Huawei con LDP.","input":"Router-ID 2.2.2.2, habilitar MPLS core en GE0/0/1 y GE0/0/2","output":"system-view\nmpls lsr-id 2.2.2.2\nmpls\ninterface GigabitEthernet0/0/1\nmpls\nquit\ninterface GigabitEthernet0/0/2\nmpls\nquit"}
+{"instruction":"VRF + BGP PE-CE en Cisco.","input":"VRF CLIENTE1, RD 65000:10, CE 192.168.10.2 AS 65010","output":"configure terminal\nip vrf CLIENTE1\nrd 65000:10\nroute-target export 65000:10\nroute-target import 65000:10\nrouter bgp 65000\naddress-family ipv4 vrf CLIENTE1\nneighbor 192.168.10.2 remote-as 65010\nneighbor 192.168.10.2 activate\nend"}
+{"instruction":"Configurar MSTP en Cisco.","input":"Región CORE, VLANs 1-20 instancia 1, VLANs 21-40 instancia 2","output":"configure terminal\nspanning-tree mst configuration\nname CORE\nrevision 1\ninstance 1 vlan 1-20\ninstance 2 vlan 21-40\nend"}
+{"instruction":"Habilitar PortFast + BPDUguard en Cisco.","input":"Acceso en puerto G0/3","output":"configure terminal\ninterface GigabitEthernet0/3\nspanning-tree portfast\nspanning-tree bpduguard enable\nend"}
+{"instruction":"DHCP Snooping y Dynamic ARP Inspection en Cisco.","input":"DHCP Snooping en VLAN 10 y 20, confiar puerto uplink G0/1","output":"configure terminal\ndhcp snooping\ndhcp snooping vlan 10,20\ninterface GigabitEthernet0/1\nip dhcp snooping trust\nexit\nip arp inspection vlan 10,20\nend"}
+{"instruction":"Configurar Zone-Based Firewall en Cisco.","input":"Inside G0/0, Outside G0/1, permitir HTTP/HTTPS","output":"configure terminal\nzone security INSIDE\nzone security OUTSIDE\nclass-map type inspect WEB\nmatch protocol http https\npolicy-map type inspect INTERNET\nclass WEB\ninspect\nzone-pair security IN-OUT source INSIDE destination OUTSIDE\nservice-policy INTERNET\nend"}
+{"instruction":"Configuración de SSHv2 en Cisco.","input":"Usuario admin, dominio lab.local, cifrado fuerte","output":"configure terminal\nip domain-name lab.local\ncrypto key generate rsa modulus 2048\nip ssh version 2\nusername admin privilege 15 secret admin123\nline vty 0 4\nlogin local\ntransport input ssh\nend"}
+{"instruction":"ACL extendida en Huawei.","input":"Permitir HTTP desde 192.168.5.0/24 hacia 10.1.1.10, denegar todo lo demás","output":"system-view\nacl 3001\nrule 10 permit tcp source 192.168.5.0 0.0.0.255 destination 10.1.1.10 0 destination-port eq 80\nrule 20 deny ip\nquit"}
+{"instruction":"Configurar SLAAC en Cisco.","input":"Red IPv6 2001:db8:100::/64 en VLAN 100","output":"configure terminal\ninterface Vlan100\nipv6 address 2001:db8:100::1/64\nios dhcp client pd prefix-only\nipv6 nd prefix 2001:db8:100::/64\nend"}
+{"instruction":"Configurar DHCPv6 stateful en Huawei.","input":"Pool IPV6LAN, prefix 2001:db8:20::/64, DNS 2001:4860:4860::8888","output":"system-view\nipv6 dhcp enable\nipv6 dhcp server pool IPV6LAN\naddress-prefix 2001:db8:20::/64\ndns-server 2001:4860:4860::8888\nquit"}
+{"instruction":"Configurar OSPF multiárea en Cisco.","input":"Área 0 y área 10, redes 10.1.0.0/24 y 10.2.0.0/24","output":"configure terminal\nrouter ospf 1\nnetwork 10.1.0.0 0.0.0.255 area 0\nnetwork 10.2.0.0 0.0.0.255 area 10\nend"}
+{"instruction":"Configurar VXLAN EVPN en Huawei.","input":"VTEP 192.168.50.10, VNI 1000, BGP EVPN ASN 65001","output":"system-view\ninterface VxlanTunnel 1\nsource 192.168.50.10\nvxlan vni 1000\nquit\nbgp 65001\nevpn\nquit"}
+{"instruction":"Configurar HSRP básico en Cisco.","input":"VLAN 10, virtual IP 192.168.10.254, prioridad 110","output":"configure terminal\ninterface Vlan10\nip address 192.168.10.2 255.255.255.0\nstandby 10 ip 192.168.10.254\nstandby 10 priority 110\nend"}
+{"instruction":"Configurar VRRP master en Huawei.","input":"VLAN 20, VRID 5, virtual IP 10.20.0.1","output":"system-view\ninterface Vlanif20\nip address 10.20.0.2 255.255.255.0\nvrrp vrid 5 virtual-ip 10.20.0.1\nvrrp vrid 5 priority 120\nquit"}
+{"instruction":"Configurar BGP dual-stack en Cisco.","input":"ASN local 65010, peer 2001:db8:1::1 y 40.1.1.1","output":"configure terminal\nrouter bgp 65010\nneighbor 40.1.1.1 remote-as 65020\nneighbor 2001:db8:1::1 remote-as 65020\naddress-family ipv6\nneighbor 2001:db8:1::1 activate\nend"}
+{"instruction":"Configurar IS-IS nivel-2 en Huawei.","input":"Red 49.0001, interfaz GE0/0/0","output":"system-view\nisis 1\nnetwork-entity 49.0001.0000.0000.0001.00\ninterface GigabitEthernet0/0/0\nisis enable\nquit"}
+{"instruction":"Configurar DMVPN fase 3 en Cisco.","input":"NHRP NBMA 200.1.1.1, tunnel key 100, red 172.16.0.0/16","output":"configure terminal\ninterface Tunnel0\nip address 172.16.1.1 255.255.0.0\ntunnel source GigabitEthernet0/0\ntunnel mode gre multipoint\ntunnel key 100\nip nhrp network-id 100\nip nhrp nhs 172.16.1.254 nbma 200.1.1.1\nend"}
+{"instruction":"Configurar ACL extendida en Huawei.","input":"Permitir SSH desde 192.168.30.0/24, negar resto","output":"system-view\nacl number 3000\ntip permit tcp source 192.168.30.0 0.0.0.255 destination any eq 22\ndeny ip any any\nquit"}
+{"instruction":"Configurar NAT overload en Cisco.","input":"Red inside 192.168.50.0/24, salida en g0/1","output":"configure terminal\ninterface GigabitEthernet0/0\nip nat inside\ninterface GigabitEthernet0/1\nip nat outside\nip nat inside source list 1 interface GigabitEthernet0/1 overload\naccess-list 1 permit 192.168.50.0 0.0.0.255\nend"}
+{"instruction":"Configurar DHCPv6 Prefix Delegation en Huawei.","input":"Prefix 2001:db8:300::/56, interfaz WAN GE0/0/1","output":"system-view\nipv6 dhcp enable\ninterface GigabitEthernet0/0/1\nipv6 address auto\nipv6 dhcp client pd request\nquit"}
+{"instruction":"Configurar PPPoE client en Cisco.","input":"Dialer1, usuario isp12, password netpass","output":"configure terminal\ninterface Dialer1\nip address negotiated\nppp chap hostname isp12\nppp chap password netpass\npppoe enable group global\nend"}
+{"instruction":"Configurar MSTP en Huawei.","input":"Region SPINE, instancia 1 VLAN 10 y 20","output":"system-view\nstp region-configuration\nregion-name SPINE\ninstance 1 vlan 10 20\nquit"}
+{"instruction":"Configurar QinQ en Cisco.","input":"Outer VLAN 300, inner VLAN 40","output":"configure terminal\ninterface GigabitEthernet0/1\nswitchport mode dot1q-tunnel\nswitchport access vlan 300\nend"}
+{"instruction":"Configurar LACP EtherChannel en Huawei.","input":"Ports GE0/0/1 y GE0/0/2, modo active","output":"system-view\ninterface Eth-Trunk1\nmode lacp-static\nquit\ninterface GigabitEthernet0/0/1\neth-trunk 1 active\nquit\ninterface GigabitEthernet0/0/2\neth-trunk 1 active\nquit"}
+{"instruction":"Configurar IPSec site-to-site en Cisco.","input":"Peer 203.10.10.2, PSK cisco123","output":"configure terminal\ncrypto isakmp policy 10\nauthentication pre-share\nencryption aes\nhash sha256\ncrypto isakmp key cisco123 address 203.10.10.2\ncrypto ipsec transform-set TSET esp-aes esp-sha256-hmac\nend"}
+{"instruction":"Configurar IPSec en Huawei.","input":"IKE peer REMOTE, pre-shared cisco123","output":"system-view\nike peer REMOTE pre-shared-key cisco123\nipsec policy VPN 10 isakmp REMOTE\nsecurity acl 3001\nquit"}
+{"instruction":"Configurar RIPng en Cisco.","input":"Red IPv6 2001:db8:40::/64 en G0/0","output":"configure terminal\nipv6 router rip CORE\ninterface GigabitEthernet0/0\nipv6 rip CORE enable\nend"}
+{"instruction":"Configurar Multicast PIM sparse-mode en Huawei.","input":"Red 239.1.1.0/24, interfaz GE0/0/0","output":"system-view\nmulticast routing-enable\ninterface GigabitEthernet0/0/0\npim sm-enable\nquit"}
+{"instruction":"Configurar AAA con Radius en Cisco.","input":"Servidor 192.168.99.5 key RADIUSKEY","output":"configure terminal\naaa new-model\nradius-server host 192.168.99.5 key RADIUSKEY\nend"}
+{"instruction":"Configurar TACACS+ en Huawei.","input":"Servidor 10.1.5.5 key TACKEY1","output":"system-view\ntacacs-server shared-key TACKEY1\ntacacs-server authentication 10.1.5.5\nquit"}
+{"instruction":"Configurar DHCPv4 en Cisco.","input":"Pool VLAN30, red 192.168.30.0/24, GW 192.168.30.1","output":"configure terminal\ndhcp pool VLAN30\nnetwork 192.168.30.0 255.255.255.0\ndefault-router 192.168.30.1\ndns-server 8.8.8.8\nend"}
+{"instruction":"Configurar DHCPv4 en Huawei.","input":"Pool OFFICE, red 10.10.10.0/24, DNS 9.9.9.9","output":"system-view\ndhcp enable\ndhcp server ip-pool OFFICE\nnetwork 10.10.10.0 mask 255.255.255.0\ndns-list 9.9.9.9\nquit"}
+{"instruction":"Configurar VRF en Cisco.","input":"VRF NAME EdgeVRF con RD 65001:10","output":"configure terminal\nvrf definition EdgeVRF\nrd 65001:10\nroute-target both 65001:10\nend"}
+{"instruction":"Configurar MPLS LDP en Huawei.","input":"Interfaz GE0/0/0, LSR ID 1.1.1.1","output":"system-view\nmpls lsr-id 1.1.1.1\nmpls ldp\ninterface GigabitEthernet0/0/0\nmpls\nquit"}
+{"instruction":"Configurar OSPFv3 IPv6 en Cisco.","input":"Área 0, interfaz G0/1","output":"configure terminal\nipv6 router ospf 5\ninterface GigabitEthernet0/1\nipv6 ospf 5 area 0\nend"}
+{"instruction":"Configurar PBR en Huawei.","input":"Match 192.168.50.10 next-hop 10.100.0.1","output":"system-view\nacl number 4000\nrule permit ip source 192.168.50.10 0\nt-raffic-policy P1\nclassifier C1 behavior B1\nrule C1 match acl 4000\napply traffic-policy P1 inbound\nquit"}
+{"instruction":"Configurar NetFlow en Cisco.","input":"Export 10.10.10.50:9995","output":"configure terminal\nip flow-export destination 10.10.10.50 9995\nip flow-export version 9\nend"}
+{"instruction":"Configurar sFlow en Huawei.","input":"Agente 192.168.200.1, collector 10.90.0.10:6343","output":"system-view\nsflow agent-ip 192.168.200.1\nsflow collector 1 10.90.0.10 6343\nquit"}
+{"instruction":"Configurar Port-Security en Cisco.","input":"Máximo 3 MACs, violación shutdown","output":"configure terminal\ninterface GigabitEthernet0/2\nswitchport mode access\nswitchport port-security maximum 3\nswitchport port-security violation shutdown\nend"}
+{"instruction":"Configurar Security zone firewall en Huawei.","input":"Zona TRUST, interfaz GE0/0/1","output":"system-view\nfirewall zone trust\nadd interface GigabitEthernet0/0/1\nquit"}
+{"instruction":"Configurar Static NAT en Cisco.","input":"IP local 192.168.10.10 → 203.0.113.5","output":"configure terminal\nip nat inside source static 192.168.10.10 203.0.113.5\nend"}
+{"instruction":"Configurar IPv6 static route en Huawei.","input":"Destino 2001:db8:200::/48 vía 2001:db8:1::1","output":"system-view\nipv6 route-static 2001:db8:200::/48 2001:db8:1::1\nquit"}
+{"instruction":"Configurar EIGRP IPv4 en Cisco.","input":"AS 10, red 172.16.40.0/24","output":"configure terminal\nrouter eigrp 10\nnetwork 172.16.40.0 0.0.0.255\nend"}
+{"instruction":"Configurar STP MSTP en Huawei.","input":"Instance 10 → VLAN 10,20,30","output":"system-view\nstp region-configuration\ninstance 10 vlan 10 20 30\nquit"}
+{"instruction":"Configurar IPSec AES-256 en Cisco.","input":"Transform-set AES256-HMAC","output":"configure terminal\ncrypto ipsec transform-set AES256-HMAC esp-aes 256 esp-sha-hmac\nend"}
+{"instruction":"Configurar GRE tunnel en Huawei.","input":"Tunnel source 192.168.1.1 dest 192.168.2.1","output":"system-view\ninterface Tunnel0\ntunnel-protocol gre\nsource 192.168.1.1\ndestination 192.168.2.1\nquit"}
+{"instruction":"Configurar VLAN y trunk en Cisco.","input":"VLAN 100-110, trunk en G0/1","output":"configure terminal\nvlan 100-110\ninterface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 100-110\nend"}
+{"instruction":"Configurar SVIs en Huawei.","input":"VLANIF 10 192.168.10.1/24, VLANIF 20 192.168.20.1/24","output":"system-view\ninterface Vlanif10\nip address 192.168.10.1 255.255.255.0\nquit\ninterface Vlanif20\nip address 192.168.20.1 255.255.255.0\nquit"}
+{"instruction":"Configurar Multicast PIM en Cisco.","input":"Sparse-mode, RP 192.168.1.254","output":"configure terminal\nip multicast-routing\nip pim rp-address 192.168.1.254\nend"}
+{"instruction":"Configurar Multicast RP en Huawei.","input":"Static RP 10.10.10.254","output":"system-view\nmulticast routing-enable\npim rp static 10.10.10.254\nquit"}
+{"instruction":"Configurar OSPF en Cisco.","input":"Área 0, router-id 1.1.1.1, redes 10.10.0.0/16 y 192.168.1.0/24","output":"configure terminal\nrouter ospf 1\nrouter-id 1.1.1.1\nnetwork 10.10.0.0 0.0.255.255 area 0\nnetwork 192.168.1.0 0.0.0.255 area 0\nend"}
+{"instruction":"Configurar OSPF en Huawei.","input":"Área 0, router-id 2.2.2.2, red 172.16.0.0/16","output":"system-view\nospf 1 router-id 2.2.2.2\narea 0\nnetwork 172.16.0.0 0.0.255.255\nquit"}
+{"instruction":"Configurar BGP en Cisco.","input":"ASN local 65001, peer 192.0.2.1 ASN 65002","output":"configure terminal\nrouter bgp 65001\nneighbor 192.0.2.1 remote-as 65002\naddress-family ipv4 unicast\nneighbor 192.0.2.1 activate\nend"}
+{"instruction":"Configurar BGP en Huawei.","input":"ASN 65110, peer 203.0.113.5 remote-as 65200","output":"system-view\nbgp 65110\npeer 203.0.113.5 as-number 65200\nipv4-family unicast\npeer 203.0.113.5 enable\nquit"}
+{"instruction":"NAT overload en Cisco.","input":"Red inside 192.168.50.0/24, salida GigabitEthernet0/1","output":"configure terminal\ninterface GigabitEthernet0/1\nip nat outside\ninterface GigabitEthernet0/0\nip nat inside\nip nat inside source list 1 interface GigabitEthernet0/1 overload\naccess-list 1 permit 192.168.50.0 0.0.0.255\nend"}
+{"instruction":"NAT Easy-IP Huawei.","input":"Inside 192.168.2.0/24, WAN GigabitEthernet0/0/1","output":"system-view\nacl 2000\nrule 5 permit source 192.168.2.0 0.0.0.255\ninterface GigabitEthernet0/0/1\nnat outbound 2000\nquit"}
+{"instruction":"Configurar VRRP en Cisco.","input":"Grupo 10, IP virtual 10.1.1.254, prioridad 150","output":"configure terminal\ninterface GigabitEthernet0/0\nip address 10.1.1.1 255.255.255.0\nvrrp 10 ip 10.1.1.254\nvrrp 10 priority 150\nend"}
+{"instruction":"Configurar VRRP en Huawei.","input":"Grupo 5, IP virtual 192.168.10.254","output":"system-view\ninterface Vlan10\nip address 192.168.10.1 255.255.255.0\nvrrp vrid 5 virtual-ip 192.168.10.254\nquit"}
+{"instruction":"DHCP Cisco.","input":"Pool LAN, router 192.168.0.1, DNS 1.1.1.1","output":"configure terminal\nip dhcp pool LAN\nnetwork 192.168.0.0 255.255.255.0\ndefault-router 192.168.0.1\ndns-server 1.1.1.1\nend"}
+{"instruction":"DHCP Huawei.","input":"Pool OFFICE, gateway 10.10.10.1 DNS 8.8.8.8","output":"system-view\ndhcp enable\ndhcp server ip-pool OFFICE\nnetwork 10.10.10.0 mask 255.255.255.0\ngateway-list 10.10.10.1\ndns-list 8.8.8.8\nquit"}
+{"instruction":"ACL estándar Cisco.","input":"Permitir solo 192.168.1.10 hacia cualquier destino","output":"configure terminal\naccess-list 10 permit 192.168.1.10 0.0.0.0\nend"}
+{"instruction":"ACL Huawei.","input":"Bloquear 10.0.0.20 desde VLAN 20","output":"system-view\nacl 3000\ndeny ip source 10.0.0.20 0.0.0.0\nquit\ninterface Vlan20\ntraffic-filter inbound acl 3000\nquit"}
+{"instruction":"Configurar STP Cisco.","input":"Modo rapid-pvst, prioridad 4096","output":"configure terminal\nspanning-tree mode rapid-pvst\nspanning-tree vlan 1 priority 4096\nend"}
+{"instruction":"STP Huawei.","input":"RSTP modo, prioridad instancia 10 en VLAN 100","output":"system-view\nstp mode rstp\nvlan 100\nstp vlan 100 priority 4096\nquit"}
+{"instruction":"Configurar EtherChannel Cisco.","input":"LACP en Gi0/1–2 channel-group 5","output":"configure terminal\ninterface range GigabitEthernet0/1 - 2\nchannel-group 5 mode active\ninterface Port-channel5\nswitchport mode trunk\nend"}
+{"instruction":"Eth-Trunk Huawei.","input":"Trunk en GE0/0/1–2 en modo lacp","output":"system-view\ninterface Eth-Trunk1\nmode lacp-static\ninterface GigabitEthernet0/0/1\neth-trunk 1\ninterface GigabitEthernet0/0/2\neth-trunk 1\nquit"}
+{"instruction":"Configurar SNMP Cisco.","input":"Comunidad public solo lectura","output":"configure terminal\nsnmp-server community public RO\nend"}
+{"instruction":"SNMP Huawei.","input":"Comunidad SecureMon RW","output":"system-view\nsnmp-agent\nsnmp-agent community rw SecureMon\nquit"}
+{"instruction":"IPSec Site-to-Site Cisco.","input":"IKEv2 peer 198.51.100.2, pre-shared-key vpn123","output":"configure terminal\ncrypto ikev2 proposal PROP\nencryption aes-256\nintegrity sha256\ncrypto ikev2 policy POLICY\nproposal PROP\ncrypto ikev2 keyring KR\npeer PEER\naddress 198.51.100.2\npre-shared-key vpn123\nend"}
+{"instruction":"IPSec VPN Huawei.","input":"Peer 203.0.113.10 PSK huawei2024","output":"system-view\nike peer HQ v1\npre-shared-key huawei2024\nremote-address 203.0.113.10\nquit"}
+{"instruction": "Dame los comandos para configurar OSPF en un router", "output": "router ospf 1\n router-id X.X.X.X\n network A.B.C.D W.X.Y.Z area 0"}
+{"instruction": "Configura OSPF área 0 para la red 10.1.0.0", "output": "router ospf 1\n network 10.1.0.0 0.0.0.255 area 0"}
+{"instruction": "Activa OSPF en la interfaz Gig0/1", "output": "interface Gig0/1\n ip ospf 1 area 0"}
+{"instruction": "Configura un router-id para OSPF", "output": "router ospf 1\n router-id X.X.X.X"}
+{"instruction": "Explica qué es OSPF", "output": "OSPF es un protocolo de enrutamiento de estado de enlace que calcula rutas usando el algoritmo SPF."}
+{"instruction": "Explica el algoritmo SPF", "output": "El algoritmo SPF calcula la ruta más corta en un grafo de redes basado en costos."}
+{"instruction": "Cómo activo OSPF en todas las interfaces", "output": "router ospf 1\n network 0.0.0.0 255.255.255.255 area 0"}
+{"instruction": "Cómo ver vecinos OSPF", "output": "show ip ospf neighbor"}
+{"instruction": "Cómo ver la base de datos OSPF", "output": "show ip ospf database"}
+{"instruction": "Qué es un DR en OSPF", "output": "El DR es el router designado encargado de generar LSAs para el segmento."}
+{"instruction": "Qué áreas existen en OSPF", "output": "Las áreas pueden ser backbone, standard, stub, totally stubby y NSSA."}
+{"instruction": "Configura un área stub", "output": "router ospf 1\n area 1 stub"}
+{"instruction": "Configura un área NSSA", "output": "router ospf 1\n area 2 nssa"}
+{"instruction": "Forzar prioridad OSPF en una interfaz", "output": "interface Gig0/1\n ip ospf priority 200"}
+{"instruction": "Redistribuye rutas estáticas en OSPF", "output": "router ospf 1\n redistribute static subnets"}
+{"instruction": "Configura OSPF en área 20 para 172.16.0.0", "output": "router ospf 1\n network 172.16.0.0 0.0.255.255 area 20"}
+{"instruction": "Explica qué son los LSAs", "output": "Los LSAs son anuncios de estado de enlace que describen la topología en OSPF."}
+{"instruction": "Configura OSPF punto a punto", "output": "interface Serial0/0\n ip ospf network point-to-point"}
+{"instruction": "Configura costo OSPF", "output": "interface Gig0/1\n ip ospf cost 10"}
+{"instruction": "Deshabilita OSPF en una interfaz", "output": "interface Gig0/1\n ip ospf shutdown"}
+{"instruction": "Qué es la métrica en OSPF", "output": "Es un costo basado típicamente en el ancho de banda."}
+{"instruction": "Cómo cambiar el reference bandwidth", "output": "router ospf 1\n auto-cost reference-bandwidth 100000"}
+{"instruction": "Cómo activar OSPFv3", "output": "ipv6 router ospf 1\n router-id X.X.X.X"}
+{"instruction": "Configura OSPFv3 en una interfaz", "output": "interface Gig0/1\n ipv6 ospf 1 area 0"}
+{"instruction": "Qué puertos usa OSPF", "output": "OSPF usa IP protocolo 89."}
+{"instruction": "Qué es un ABR", "output": "Un ABR conecta múltiples áreas OSPF."}
+{"instruction": "Qué es un ASBR", "output": "Un ASBR redistribuye rutas externas hacia OSPF."}
+{"instruction": "Configura passive-interface OSPF", "output": "router ospf 1\n passive-interface Gig0/0"}
+{"instruction": "Cómo ver el proceso OSPF", "output": "show ip ospf"}
+{"instruction": "Configura NAT overload para que mi LAN salga a Internet", "output": "ip nat inside source list 1 interface Gig0/1 overload"}
+{"instruction": "Explica cómo funciona NAT", "output": "NAT traduce direcciones privadas a públicas para acceso a internet."}
+{"instruction": "Configura NAT estático", "output": "ip nat inside source static 192.168.1.10 203.0.113.10"}
+{"instruction": "Configura NAT dinámico", "output": "ip nat pool POOL1 A.B.C.D A.B.C.D netmask W.X.Y.Z"}
+{"instruction": "Define inside/outside", "output": "interface Gig0/1\n ip nat inside\n interface Gig0/2\n ip nat outside"}
+{"instruction": "Mostrar traducciones NAT", "output": "show ip nat translations"}
+{"instruction": "Borrar traducciones NAT", "output": "clear ip nat translation *"}
+{"instruction": "Qué es PAT", "output": "PAT es NAT overload y permite múltiples conexiones usando un solo IP público."}
+{"instruction": "NAT para un servidor web interno", "output": "ip nat inside source static tcp 192.168.1.10 80 203.0.113.10 80"}
+{"instruction": "Explica diferencia entre NAT y PAT", "output": "NAT traduce IPs estáticamente o dinámicamente. PAT traduce múltiples usando puertos."}
+{"instruction": "Configura NAT para dos redes internas", "output": "access-list 1 permit 10.0.0.0 0.0.0.255\naccess-list 1 permit 10.0.1.0 0.0.0.255"}
+{"instruction": "Explica por qué NAT rompe IPSec", "output": "NAT modifica direcciones origen, lo que afecta la integridad en IPSec."}
+{"instruction": "Configura NAT para VoIP", "output": "ip nat service sip tcp port 5060"}
+{"instruction": "Explica NAT hairpin", "output": "Es cuando hosts internos acceden a IP pública de un servicio interno."}
+{"instruction": "Configura NAT hairpin", "output": "ip nat enable hairpin"}
+{"instruction": "Explica inside local vs inside global", "output": "Inside local es la IP interna; inside global la IP traducida pública."}
+{"instruction": "Configura pool para NAT dinámico", "output": "ip nat pool LANPOOL 203.0.113.1 203.0.113.50 netmask 255.255.255.0"}
+{"instruction": "Explica NAT64", "output": "NAT64 traduce tráfico IPv6 a IPv4 para comunicación con servicios legados."}
+{"instruction": "Explica NAT44", "output": "NAT44 traduce IPv4 privado a IPv4 público."}
+{"instruction": "Explica NPTv6", "output": "Es NAT de prefijos para IPv6, no traduce puertos."}
+{"instruction": "Cómo ver estadísticas NAT", "output": "show ip nat statistics"}
+{"instruction": "Explica por qué NAT no se usa dentro de un ISP", "output": "NAT oculta direcciones y rompe trazabilidad IP."}
+{"instruction": "Explica symmetric NAT", "output": "Cada conexión se asigna a un puerto distinto."}
+{"instruction": "Configura NAT con route-map", "output": "ip nat inside source route-map RM interface Gig0/1 overload"}
+{"instruction": "Configura el DNS en un router Cisco con servidor 8.8.8.8", "output": "ip name-server 8.8.8.8"}
+{"instruction": "Explica qué es DNS y cómo funciona", "output": "DNS resuelve nombres de dominio a direcciones IP consultando servidores jerárquicos."}
+{"instruction": "Cómo pruebo DNS en un router", "output": "ping google.com"}
+{"instruction": "Activa resolución DNS", "output": "ip domain-lookup"}
+{"instruction": "Desactiva resolución DNS", "output": "no ip domain-lookup"}
+{"instruction": "Configura un dominio local", "output": "ip domain-name empresa.local"}
+{"instruction": "Explica qué es un nombre FQDN", "output": "Es un nombre totalmente calificado incluyendo dominio completo."}
+{"instruction": "Qué puerto usa DNS", "output": "DNS usa UDP 53 y TCP 53."}
+{"instruction": "Explica recursión DNS", "output": "La recursión implica que el servidor resuelve todo el árbol hasta obtener la respuesta."}
+{"instruction": "Explica diferencia DNS recursivo y iterativo", "output": "Recursivo resuelve completamente; iterativo devuelve referencias."}
+{"instruction": "Configura dos DNS públicos", "output": "ip name-server 8.8.8.8\nip name-server 1.1.1.1"}
+{"instruction": "Explica qué es un registro A", "output": "Es un registro DNS que asocia un nombre con una IP IPv4."}
+{"instruction": "Explica qué es un registro AAAA", "output": "Es un registro DNS para direcciones IPv6."}
+{"instruction": "Qué es un registro MX", "output": "Indica el servidor de correo para un dominio."}
+{"instruction": "Qué es un registro CNAME", "output": "Alias que apunta a otro nombre DNS."}
+{"instruction": "Explica DNSSEC", "output": "DNSSEC agrega firmas criptográficas para validar respuestas DNS."}
+{"instruction": "Explica zona forward", "output": "Resuelve nombres a direcciones IP."}
+{"instruction": "Explica zona reverse", "output": "Resuelve direcciones IP a nombres."}
+{"instruction": "Cómo verificar caché DNS", "output": "show hosts"}
+{"instruction": "Configura una ACL que bloquee la red 192.168.1.0", "output": "access-list 100 deny ip 192.168.1.0 0.0.0.255 any"}
+{"instruction": "Explica qué es una ACL estándar", "output": "ACLs estándar filtran por dirección origen."}
+{"instruction": "Explica ACL extendida", "output": "ACLs extendidas filtran por origen, destino, puerto y protocolo."}
+{"instruction": "Permite solo SSH", "output": "access-list 101 permit tcp any any eq 22"}
+{"instruction": "Bloquea ICMP", "output": "access-list 100 deny icmp any any"}
+{"instruction": "Aplica ACL a una interfaz", "output": "interface Gig0/1\n ip access-group 100 in"}
+{"instruction": "ACL para permitir solo HTTP", "output": "access-list 101 permit tcp any any eq 80"}
+{"instruction": "ACL para denegar Telnet", "output": "access-list 101 deny tcp any any eq 23"}
+{"instruction": "ACL para permitir solo una IP", "output": "access-list 101 permit ip host 192.168.1.10 any"}
+{"instruction": "ACL para bloquear YouTube", "output": "access-list 101 deny tcp any host youtube.com eq 443"}
+{"instruction": "Explica wildcard mask", "output": "Es el inverso de la máscara de red usado en ACL y OSPF."}
+{"instruction": "ACL para permitir solo DNS", "output": "access-list 101 permit udp any any eq 53"}
+{"instruction": "Ver ACL aplicadas", "output": "show ip interface Gig0/1"}
+{"instruction": "Ver contadores ACL", "output": "show access-lists"}
+{"instruction": "ACL para bloquear una VLAN", "output": "access-list 101 deny ip 10.10.10.0 0.0.0.255 any"}
+{"instruction": "ACL para permitir tráfico interno", "output": "access-list 101 permit ip 192.168.0.0 0.0.255.255 any"}
+{"instruction": "ACL para bloquear tráfico de Facebook", "output": "access-list 101 deny ip any host facebook.com"}
+{"instruction": "Explica posición de ACLs", "output": "ACLs se evalúan de arriba abajo hasta un match."}
+{"instruction": "Dame una configuración básica de BGP", "output": "router bgp <ASN>\n neighbor <IP> remote-as <ASN>"}
+{"instruction": "Configura BGP con un vecino", "output": "router bgp 65001\n neighbor 200.1.1.2 remote-as 65002"}
+{"instruction": "Explica qué es BGP", "output": "BGP es el protocolo de enrutamiento entre sistemas autónomos en Internet."}
+{"instruction": "Activa una red en BGP", "output": "router bgp 65001\n network 10.0.0.0 mask 255.255.255.0"}
+{"instruction": "Explica eBGP", "output": "eBGP se usa entre sistemas autónomos diferentes."}
+{"instruction": "Explica iBGP", "output": "iBGP se usa dentro del mismo autononomous system."}
+{"instruction": "Explica atributo AS_PATH", "output": "AS_PATH muestra los sistemas autónomos recorridos."}
+{"instruction": "Explica atributo LOCAL_PREF", "output": "Determina preferencia de rutas internas."}
+{"instruction": "Explica atributo MED", "output": "Sugiere preferencia hacia AS vecino."}
+{"instruction": "Ver tabla BGP", "output": "show ip bgp"}
+{"instruction": "Ver vecinos BGP", "output": "show ip bgp summary"}
+{"instruction": "Reset suave BGP", "output": "clear ip bgp * soft"}
+{"instruction": "Redistribuir rutas en BGP", "output": "router bgp 65001\n redistribute static"}
+{"instruction": "Filtrar rutas con prefix-list", "output": "ip prefix-list PL permit 10.0.0.0/24"}
+{"instruction": "Explica route reflector", "output": "Reduce necesidad de mallas BGP internas."}
+{"instruction": "Configura multihop BGP", "output": "neighbor <IP> ebgp-multihop 2"}
+{"instruction": "Explica next-hop-self", "output": "Hace que el router anunciante sea el next-hop."}
+{"instruction": "Explica BGP communities", "output": "Etiquetas usadas para políticas de enrutamiento."}
+{"instruction": "Configura password BGP", "output": "neighbor <IP> password cisco"}
+{"instruction": "Configura OSPF área 0", "output": "Debes especificar al menos la red que deseas anunciar para poder generar los comandos OSPF."}
+{"instruction": "Activa OSPF en el router", "output": "Faltan parámetros. Necesito el número de proceso y al menos una red a anunciar."}
+{"instruction": "Configura OSPF para la red 10.0.0.0", "output": "Para configurar OSPF debo saber el área donde deseas anunciar la red 10.0.0.0."}
+{"instruction": "Configura OSPF para la red 172.16.0.0 en cualquier área", "output": "Indica el número de área OSPF para generar los comandos."}
+{"instruction": "Habilita OSPF en todas las interfaces", "output": "Necesito el número de proceso OSPF para poder habilitarlo en todas las interfaces."}
+{"instruction": "Configura OSPF sin especificar área", "output": "Debes especificar un área para generar los comandos OSPF."}
+{"instruction": "Asigna un router-id para OSPF", "output": "Falta el valor del router-id."}
+{"instruction": "Activa OSPF en Gig0/0", "output": "Debo saber el proceso OSPF y el área en la que estará Gig0/0."}
+{"instruction": "Activa OSPF en la interfaz que tenga red 192.168.5.0", "output": "Falta área OSPF y número de proceso."}
+{"instruction": "Configura OSPF para una red /16", "output": "Necesito la dirección de red exacta y el área OSPF."}
+{"instruction": "Configura OSPF sin saber la máscara", "output": "Es necesario conocer la red y máscara para crear el comando network."}
+{"instruction": "Configura OSPF para cualquier red 192.168.x.x", "output": "Debes indicar la red exacta y el área OSPF."}
+{"instruction": "Crea el proceso OSPF 10", "output": "Debo saber qué redes anunciar en el proceso 10."}
+{"instruction": "Configura OSPF en el proceso 5", "output": "Debo conocer la red y el área para generar los comandos network."}
+{"instruction": "Configura OSPF área 1 sin red indicada", "output": "Para configurar OSPF área 1 necesito al menos una red."}
+{"instruction": "Habilita OSPFv3 en todas las interfaces", "output": "Necesito el id del proceso OSPFv3."}
+{"instruction": "Activa OSPF para IPv6", "output": "Debo saber qué interfaces deseas activar para OSPFv3."}
+{"instruction": "Configura OSPF stub sin especificar área", "output": "Debes indicar el área que será marcada como stub."}
+{"instruction": "Configura área NSSA en OSPF sin parámetros", "output": "Debes indicar el número del área que será NSSA."}
+{"instruction": "Configura prioridad OSPF sin indicar interfaz", "output": "Debo saber en qué interfaz se aplicará la prioridad."}
+{"instruction": "Configura costo OSPF sin indicar interfaz", "output": "Falta interfaz y valor de costo."}
+{"instruction": "Configura OSPF punto a punto sin indicar dónde", "output": "Debo saber la interfaz donde irá la configuración punto a punto."}
+{"instruction": "Configura passive-interface OSPF sin interfaz", "output": "Debes proporcionar la interfaz que será pasiva."}
+{"instruction": "Configura redistribución en OSPF sin origen", "output": "Debo saber el origen de la redistribución, por ejemplo static o eigrp."}
+{"instruction": "Crea un área OSPF nuevo sin parámetros", "output": "Debes indicar el número del área y al menos una red para asignarla."}
+{"instruction": "Configura NAT overload", "output": "Necesito la red interna y la interfaz de salida para generar los comandos NAT overload."}
+{"instruction": "Activa NAT para la red interna", "output": "Debes indicar la red interna exacta y la interfaz outside."}
+{"instruction": "Configura NAT para la red 192.168.1.0", "output": "Falta máscara y la interfaz por donde se hará NAT."}
+{"instruction": "Configura NAT dinámico sin pool", "output": "Debes especificar un pool o un rango de direcciones para NAT dinámico."}
+{"instruction": "Configura un pool NAT llamado LANPOOL", "output": "Debes indicar el rango de IPs para el pool LANPOOL."}
+{"instruction": "Configura NAT estático para una IP", "output": "Falta la IP interna y la IP pública correspondiente."}
+{"instruction": "Configura NAT para salida hacia internet", "output": "Necesito la interfaz inside y la interfaz outside."}
+{"instruction": "Define inside/outside NAT sin interfaces", "output": "Debes especificar qué interfaz será inside y cuál será outside."}
+{"instruction": "Activa overload en cualquier interfaz", "output": "Es necesario indicar la interfaz donde se aplicará overload."}
+{"instruction": "Configura NAT solo con la IP pública", "output": "Debo conocer la IP interna correspondiente a esa IP pública."}
+{"instruction": "Asignar rango para NAT dinámico sin valores", "output": "Debes indicar inicio y fin del rango para NAT dinámico."}
+{"instruction": "Configura NAT para VoIP sin puertos", "output": "Faltan reglas o puertos específicos para VoIP."}
+{"instruction": "Configura NAT solo con máscara", "output": "Debes indicar la dirección de red asociada a esa máscara."}
+{"instruction": "Configura PAT en el router", "output": "Debo conocer la interfaz de salida para activar PAT."}
+{"instruction": "Configura NAT para dos redes internas sin detalles", "output": "Necesito ambas redes y la interfaz outside."}
+{"instruction": "Configura NAT con route-map sin definir route-map", "output": "Falta el nombre del route-map y sus condiciones."}
+{"instruction": "Aplica NAT inside a una interfaz no especificada", "output": "Debes indicar la interfaz que será marcada como inside."}
+{"instruction": "Aplica NAT outside a la interfaz de salida", "output": "Debo saber cuál es la interfaz de salida."}
+{"instruction": "Configura NAT hairpin sin indicar IP", "output": "Faltan IP interna y pública para el hairpin NAT."}
+{"instruction": "Crea traducción NAT estática TCP sin puertos", "output": "Debes indicar los puertos TCP para la regla estática."}
+{"instruction": "Configura pool NAT para la red 10.0.0.0", "output": "Debo conocer el rango exacto de IPs del pool."}
+{"instruction": "Configura NAT en un router sin interfaces indicadas", "output": "Faltan interfaces inside y outside."}
+{"instruction": "Configura NAT para servidores sin IP", "output": "Debes indicar las IP de los servidores."}
+{"instruction": "Configura NAT para acceso remoto", "output": "Debo saber la IP interna que quieres exponer."}
+{"instruction": "Habilita NAT sin ninguna red asignada", "output": "Necesito al menos la red interna para activar NAT."}
+{"instruction": "Configura DNS en el router", "output": "Debo saber qué servidor DNS deseas configurar."}
+{"instruction": "Agrega un servidor DNS cualquiera", "output": "Falta la IP del servidor DNS."}
+{"instruction": "Configura DNS con un servidor sin IP", "output": "Debes proporcionar la IP del servidor DNS."}
+{"instruction": "Configura DNS 8.8.8.8", "output": "Configuración incompleta. ¿Deseas agregar más servidores?"}
+{"instruction": "Configura dos servidores DNS sin especificarlos", "output": "Debo conocer las IPs de ambos servidores."}
+{"instruction": "Define dominio local sin nombre", "output": "Falta el nombre del dominio local."}
+{"instruction": "Activa DNS lookup", "output": "Comando listo: 'ip domain-lookup'."}
+{"instruction": "Desactiva DNS lookup", "output": "Comando listo: 'no ip domain-lookup'."}
+{"instruction": "Configura caché DNS sin parámetros", "output": "Debo saber el tiempo o las opciones de caché."}
+{"instruction": "Configura un DNS para resolver nombres", "output": "Debo saber la IP del servidor DNS."}
+{"instruction": "Configura DNS para IPv6 sin detalles", "output": "Falta la dirección IPv6 del servidor DNS."}
+{"instruction": "Configura DNS de la LAN sin dirección", "output": "Debes proporcionar la IP del servidor DNS."}
+{"instruction": "Configura name-server sin valor", "output": "Debes indicar la IP del name-server."}
+{"instruction": "Configura resolución DNS automática", "output": "Debo saber el servidor a usar para resolución automática."}
+{"instruction": "Configura un DNS secundario sin IP", "output": "Debo conocer la IP del servidor secundario."}
+{"instruction": "Configura DNS en cualquier interfaz", "output": "Debes indicar la interfaz y la configuración deseada."}
+{"instruction": "Configura DNS para uso interno", "output": "Necesito la IP del servidor DNS interno."}
+{"instruction": "Configura DNS para servidores locales", "output": "Debo saber la IP del servidor DNS local."}
+{"instruction": "Configura DNS con dominio empresa.local sin servidores", "output": "Falta name-server para el dominio empresa.local."}
+{"instruction": "Configura DNS recursivo sin especificar servidor", "output": "Debes dar la IP del servidor recursivo."}
+{"instruction": "Agrega un servidor DNS sin protocolo", "output": "Solo necesito su IP."}
+{"instruction": "Activa DNS sin configuración adicional", "output": "Debo saber al menos un servidor DNS."}
+{"instruction": "Configura DNS en router sin name-server", "output": "Debo saber la IP del name-server."}
+{"instruction": "Configura DNS sin indicar si es primario o secundario", "output": "Solo necesito la IP del servidor DNS."}
+{"instruction": "Configura DNS estático sin dirección", "output": "Falta la IP del servidor DNS estático."}
+{"instruction": "Crea una ACL estándar", "output": "Debes indicar el número de ACL y la red o host afectado."}
+{"instruction": "Crea una ACL extendida sin reglas", "output": "Debes agregar al menos una regla permit o deny."}
+{"instruction": "Bloquea una red sin decir cuál", "output": "Necesito la red a bloquear para generar la ACL."}
+{"instruction": "Permite una IP sin decir cuál", "output": "Debo saber qué IP permitir."}
+{"instruction": "Bloquea tráfico ICMP sin parámetros", "output": "Debes indicar origen y destino para bloquear ICMP."}
+{"instruction": "Aplica ACL a una interfaz no especificada", "output": "Falta interfaz y dirección (in/out)."}
+{"instruction": "Crea ACL 100 sin reglas", "output": "Debes agregar reglas permit o deny a ACL 100."}
+{"instruction": "Crea ACL para permitir solo tráfico interno", "output": "Falta la red interna a permitir."}
+{"instruction": "Crea ACL para bloquear tráfico externo", "output": "Debo saber la red externa exacta."}
+{"instruction": "Configura ACL para permitir HTTP sin puertos", "output": "Debo saber origen, destino o interfaz."}
+{"instruction": "Crea ACL para puerto 22 sin protocolo", "output": "Debo saber si es TCP o UDP."}
+{"instruction": "Aplica ACL de entrada sin interfaz", "output": "Debes indicar la interfaz."}
+{"instruction": "Aplica ACL de salida sin interfaz", "output": "Debes proporcionar la interfaz."}
+{"instruction": "Crea ACL que bloquee una VLAN sin número", "output": "Debo conocer el número de VLAN a bloquear."}
+{"instruction": "Configura ACL para DNS sin puertos", "output": "Debo saber si quieres permitir o bloquear y la red afectada."}
+{"instruction": "Bloquea puerto 443 sin contexto", "output": "Debo saber origen y destino."}
+{"instruction": "Crea ACL para host sin IP", "output": "Necesito la IP del host."}
+{"instruction": "Configura ACL para redes 10.0.0.0 sin wildcard", "output": "Necesito el wildcard mask."}
+{"instruction": "Permite toda la red interna sin máscara", "output": "Debes proporcionar la máscara de la red interna."}
+{"instruction": "ACL para denegar tráfico de internet sin destino", "output": "Falta destino para la regla deny."}
+{"instruction": "ACL para permitir servicios sin especificarlos", "output": "Debes indicar los servicios a permitir."}
+{"instruction": "ACL solamente con permit ip any any", "output": "ACL válida. Ninguna regla adicional requerida."}
+{"instruction": "ACL que bloquee IPv6 sin parámetros", "output": "Debes indicar la red o el tipo de tráfico IPv6."}
+{"instruction": "Configura ACL para impresoras sin IP", "output": "Debo conocer la IP de la impresora o su red."}
+{"instruction": "Crea ACL para accesos remotos sin detalles", "output": "Debo saber la red o IP que debe tener acceso remoto."}
+{"instruction": "Configura BGP en el router", "output": "Necesito el número de ASN para activar BGP."}
+{"instruction": "Activa BGP con ASN sin especificarlo", "output": "Debes especificar el número del ASN local."}
+{"instruction": "Configura vecino BGP sin IP", "output": "Debes indicar la IP del vecino."}
+{"instruction": "Configura vecino BGP sin ASN", "output": "Debo saber el ASN remoto del vecino."}
+{"instruction": "Anuncia una red en BGP sin máscara", "output": "Debes indicar la máscara exacta de la red."}
+{"instruction": "Activa BGP para red 10.0.0.0 sin datos", "output": "Debo conocer la máscara antes de anunciar la red en BGP."}
+{"instruction": "Configura BGP para multihop sin valor", "output": "Falta el número de saltos para ebgp-multihop."}
+{"instruction": "Configura password BGP sin clave", "output": "Debes indicar la clave de autenticación BGP."}
+{"instruction": "Aplica next-hop-self sin vecinos", "output": "Debo conocer el peer-group o vecino donde aplicar next-hop-self."}
+{"instruction": "Configura ruta BGP sin destino", "output": "Debes indicar la red que deseas anunciar."}
+{"instruction": "Configura BGP en AS interno sin número", "output": "Tengo que saber el ASN para configuración iBGP."}
+{"instruction": "Configura eBGP sin parámetros", "output": "Necesito el ASN remoto y la IP del vecino."}
+{"instruction": "Configura iBGP sin parámetros", "output": "Necesito el ASN y el vecino interno."}
+{"instruction": "Activa BGP en interfaz desconocida", "output": "En BGP no se activa por interfaz; debes indicar vecino y ASN."}
+{"instruction": "Crea route-reflector sin clientes", "output": "Debes indicar qué vecinos serán clientes RR."}
+{"instruction": "Filtra rutas en BGP sin listas", "output": "Debes proporcionar prefix-list o route-map."}
+{"instruction": "Configura prefix-list sin entradas", "output": "Debo saber qué redes deseas filtrar."}
+{"instruction": "Redistribuye rutas en BGP sin origen", "output": "Debes decir qué quieres redistribuir en BGP."}
+{"instruction": "Activa BGP IPv6 sin direcciones", "output": "Debes indicar vecinos IPv6 o redes IPv6."}
+{"instruction": "Configura BGP para una sola red sin wildcard", "output": "Debo conocer la máscara de esa red."}
+{"instruction": "Agrega un peer-group sin miembros", "output": "Debes indicar qué vecinos se unirán al peer-group."}
+{"instruction": "Configura timers BGP sin tiempos", "output": "Debes indicar valores de hold-time y keepalive."}
+{"instruction": "Configura update-source sin interfaz", "output": "Debo saber desde qué interfaz serán enviados los updates."}
+{"instruction": "Configura maximum-paths sin número", "output": "Debes indicar el número de rutas permitidas."}
+{"instruction": "Configura BGP sin ninguna red anunciada", "output": "Debes indicar al menos una red para anunciar en BGP."}
