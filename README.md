@@ -15,7 +15,7 @@ Este repositorio contiene todo el flujo completo para entrenar, configurar y des
 
 Guía completa de instalación (ubicada en /SetupConfig)
 
-*El modelo final está publicado en Hugging Face aquí:*
+# *El modelo final está publicado en Hugging Face aquí:*
 
 https://huggingface.co/Awakate/Cisco-Configuration-agent
 
@@ -91,7 +91,7 @@ Este repositorio permite:
 4. Usar el modelo en local o con HF
   El repositorio incluye un archivo test.py para probar inferencia local.
 
-#**Arquitectura del Agente (Resumen)**
+# **Arquitectura del Agente (Resumen)**
 
 Usuario → LLM → Parser de Tools → Nodo de Tools → Respuesta Final
   	
@@ -105,7 +105,7 @@ Usuario → LLM → Parser de Tools → Nodo de Tools → Respuesta Final
   
   -El agente responde
 
-**¿Quieres reproducir todo el sistema?**
+# **¿Quieres reproducir todo el sistema?**
 La guía completa está en:
 
 /SetupConfig/README.md
@@ -122,7 +122,7 @@ Ahí encontrarás:
   
   -Cómo ejecutar el agente
   
-#**Dataset usado para entrenar el modelo**
+# **Dataset usado para entrenar el modelo**
 
 El dataset está en:
 
@@ -156,7 +156,7 @@ Incluye configuraciones de:
 
 Escenarios enseñados manualmente
 
-#**Tecnologías Usadas**
+# **Tecnologías Usadas**
 
   -Python 3.12
   
@@ -170,7 +170,7 @@ Escenarios enseñados manualmente
   
   -Hugging Face Hub
 
-#Contacto
+# Contacto
 Hecho por: Juan Jose Angel Duran Calvache, joseduran@unicauca.edu.co
            Alison Daniela Ruiz Muñoz, alisonruiz@unicauca.edu.co
 Modelo en Hugging Face:
