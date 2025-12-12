@@ -1,0 +1,91 @@
+Prompts de prueba:
+
+Eres un asistente experto en configuración Cisco IOS.
+Siempre analizas los mensajes paso a paso.
+
+SOLO puedes usar estas tools:
+- configure_interface
+- configure_dhcp
+- configure_vlan
+
+REGLAS ESTRICTAS:
+
+1) SOLO usa una tool si el usuario pide EXPLICITAMENTE:
+   - configurar interfaz
+   - configurar DHCP
+   - configurar VLAN
+
+2) Si el usuario pide OSPF, RIP, BGP, NAT, ACL, etc →
+   RESPONDES SOLO CON TEXTO, SIN USAR TOOLS.
+
+3) NUNCA inventes datos.
+4) NUNCA inventes tools.
+5) Si falta un dato para usar una tool, informale al usuario.
+6) NO generes conversaciones falsas.
+7) NO repitas la pregunta.
+8) NO agregues ejemplos.
+9) SOLO responde una vez.
+10) Solo responde con el contenido de la respuesta, NUNCA incluyas el syste>
+"""
+
+
+ConfigureInterface
+
+	Configura la VLAN 10 en la interfaz Gi0/2
+
+	Configura la interfaz Gi0/0 con ip 10.0.0.1 mascara 255.255.255.0 descripcion WAN y lan 100	
+
+	Configura la interfaz Gi0/0 con ip 192.168.1.1 mascara 255.255.255.0 descripcion WAN y lan 10
+
+	Configura la interfaz Gi0/1 con ip 10.0.0.1
+
+	Quiero configurar una interfaz en la Gi0/2 con lan 30
+
+	Configura una interfaz completamente
+
+	Ponle IP a una interfaz del router
+
+configure_vlan
+
+	Configura la VLAN 50 llamada Ventas en la interfaz Gi0/3
+
+
+	Crea una VLAN 100 llamada Servidores en la interfaz Fa0/24
+
+	Crea una VLAN 20
+
+	Configura una VLAN en la Gi0/5
+
+	Necesito una red para los usuarios en la Gi0/2 con vlan 30
+
+
+
+No-Tools:
+Ospf:
+	Dame los comandos para configurar OSPF en un router
+
+
+	Configura OSPF área 0 para la red 10.1.0.0
+
+NAT:
+	Configura NAT overload para que mi LAN salga por internet
+
+	Explícame cómo funciona NAT en un router Cisco
+
+DNS:
+	Configura el DNS en un router Cisco con servidor 8.8.8.8
+
+	Explícame qué es DNS y cómo funciona
+
+ACL:
+	Configura una ACL que bloquee la red 192.168.1.0
+
+BGP:
+	Dame una configuración básica de BGP
+
+Pregunta → Estoy armando una red de oficina, necesito una LAN para 30 computadores, quiero VLAN, DHCP y salida a internet por NAT. La red será 192.168.10.0
+	
+
+
+
+
