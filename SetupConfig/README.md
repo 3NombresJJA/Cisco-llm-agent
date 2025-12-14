@@ -46,16 +46,28 @@ Esto guardara el modelo en la carpeta en:
 
 Una vez descargado el agente se puede hacer un test sencillo ejecutando:
 
-    python test.py
+    python3 test.py
 
 Para proceder a hacer un FineTune se ejecuta:
 
-    python finetune_model.py
+    python3 finetune_model.py
 
 Esto ejecuta un FineTune con LoRA a 4 bits, el cual se puede hacer con GPUS de bajo costo, en este caso una de 6GB VRAM,
 se entrena con el data set de la carpeta Knowledge y genera un adaptador lora en la carpeta de Models.
 
+# **4. Ejecución del agente** 
 
+Una vez que se ha completado el fine tune del modelo base, se debio crear un archivo con los pesos LoRA dentro de la carpeta Models, esta carpeta viene con una version del agente implementado, este agente cuenta con: 
+
+- Detecta herramientas necesarias
+- Ejecuta configure_interface, configure_dhcp, configure_vlan
+- Responde con configuraciones Cisco reales
+
+Para ejecutar este agente corre:
+
+        python3 agenteP.py
+
+En caso tal de que quieras correr la versión final del agente, es el archivo agenteJ.py, en la raiz del proyecto.
 
 
 
